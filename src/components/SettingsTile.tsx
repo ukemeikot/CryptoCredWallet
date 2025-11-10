@@ -1,10 +1,7 @@
-// /src/components/SettingsTile.tsx
-
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
-import { useTheme } from '../contexts/ThemeContext'; // 👈 Import Theme Hook
-
+import { useTheme } from '../contexts/ThemeContext';
 interface SettingsTileProps {
   title: string;
   value?: string;
@@ -14,12 +11,10 @@ interface SettingsTileProps {
 }
 
 const SettingsTile: React.FC<SettingsTileProps> = ({ title, value, iconName, onPress, isDestructive = false }) => {
-  const { theme } = useTheme(); // 👈 Access the current theme object
+  const { theme } = useTheme();
   
-  // Dynamic colors based on theme
   const dynamicStyles = getDynamicStyles(theme);
 
-  // Text color logic: uses primary text color or theme's error color
   const textColor = isDestructive ? theme.error : theme.text;
   
   return (
@@ -28,7 +23,6 @@ const SettingsTile: React.FC<SettingsTileProps> = ({ title, value, iconName, onP
       
       <View style={styles.content}>
         <Text style={[styles.title, { color: textColor }]}>{title}</Text>
-        {/* Subtext color uses the theme's subtext color */}
         {value && <Text style={[styles.value, { color: theme.subtext }]}>{value}</Text>}
       </View>
       
@@ -39,20 +33,17 @@ const SettingsTile: React.FC<SettingsTileProps> = ({ title, value, iconName, onP
   );
 };
 
-// Function to generate dynamic styles based on the current theme
 const getDynamicStyles = (theme: any) => StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 15,
         paddingHorizontal: 20,
-        backgroundColor: theme.card, // 👈 Uses theme.card (Dynamically changes)
+        backgroundColor: theme.card,
         borderBottomWidth: 1,
-        borderBottomColor: theme.background, // 👈 Uses theme.background for separator
+        borderBottomColor: theme.background,
     },
 });
-
-// Static styles (independent of theme)
 const styles = StyleSheet.create({
   icon: {
     marginRight: 15,
@@ -67,8 +58,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '500',
+    fontFamily: 'Inter-Light'
   },
-  // Value color is now set inline in the component, so we remove its hardcoded style here.
   value: {
     fontSize: 14,
   }

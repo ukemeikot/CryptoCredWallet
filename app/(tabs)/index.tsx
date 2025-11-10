@@ -92,10 +92,12 @@ const CoinListScreen = () => {
             <Image source={{ uri: 'https://i.pravatar.cc/100?img=1' }} style={styles.avatar} />
           </View>
           <View style={styles.actionIcons}>
-            <Pressable onPress={handleSearchPress} style={{ marginRight: 15 }}>
+            <Pressable onPress={handleSearchPress} style={styles.iconWrapper}>
               <Ionicons name="search-outline" size={24} color="#FFF" />
             </Pressable>
-            <Ionicons name="notifications-outline" size={24} color="#FFF" />
+            <Pressable style={styles.iconWrapper}>
+              <Ionicons name="notifications-outline" size={24} color="#FFF" />
+            </Pressable>
           </View>
         </View>
 
@@ -168,6 +170,7 @@ const styles = StyleSheet.create({
   },
   actionIcons: {
     flexDirection: 'row',
+    gap: 12
   },
 
   // --- Assets List Header Styles ---
@@ -181,8 +184,9 @@ const styles = StyleSheet.create({
   },
   assetsTitle: {
     color: '#FFF',
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Inter-Regular',
   },
   allChainsButton: {
     backgroundColor: '#3A3A5F',
@@ -193,11 +197,29 @@ const styles = StyleSheet.create({
   allChainsText: {
     color: '#4A90E2',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
+    fontFamily: 'Inter-Light'
   },
 
   // --- Asset List Content and Padding Fix ---
   listContent: {
     paddingBottom: TAB_BAR_HEIGHT + TAB_BAR_BOTTOM_OFFSET + 20,
   },
+  iconWrapper: {
+        // 1. Define Size and Shape
+        width: 44,       // Set width and height to be equal
+        height: 44,
+        borderRadius: 22, // Half of the width/height makes it a perfect circle
+        
+        // 2. Center the Icon
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+        // 3. Create the Outline/Glow Effect
+        borderWidth: 1.5, // Thickness of the circle line
+        borderColor: '#4A90E2', // Use your primary accent color
+        
+        // Optional: Ensure transparent background if needed
+        backgroundColor: 'transparent',
+    },
 });

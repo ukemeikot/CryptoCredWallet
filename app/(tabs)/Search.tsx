@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native';
-import { useRouter } from 'expo-router'; // 🌟 NEW: Import useRouter
+import { useRouter } from 'expo-router';
 import { useCoinData } from '../../src/hooks/useCoinData'; 
 import { ICoin } from '../../src/types/coinTypes';
 import CoinListTile from '../../src/components/CoinListTile'; 
@@ -85,16 +85,17 @@ const styles = StyleSheet.create({
   gradientContainer: { flex: 1 },
   safeAreaContent: { flex: 1, backgroundColor: 'transparent', marginTop: 0 },
   title: { 
-    fontSize: 24, 
+    fontSize: 20, 
     fontWeight: 'bold', 
     color: '#FFF', 
     marginHorizontal: 20, 
     marginBottom: 15,
     marginTop: 5,
+    fontFamily: 'Inter-Regular'
   },
   searchInput: {
     height: 50,
-    backgroundColor: '#1E1E3F',
+    backgroundColor: '#0b0b26ff',
     borderRadius: 10,
     paddingHorizontal: 15,
     marginHorizontal: 15,
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#3A3A5F',
+    fontFamily: 'Inter-Light'
   },
   listContent: {
     paddingBottom: TAB_BAR_HEIGHT + TAB_BAR_BOTTOM_OFFSET + 20, 

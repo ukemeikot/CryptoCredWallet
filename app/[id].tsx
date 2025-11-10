@@ -250,15 +250,12 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   safeAreaContent: { flex: 1 },
   center: { justifyContent: 'center', alignItems: 'center' },
-  statusText: { color: '#FFF', marginTop: 15, fontSize: 16 },
-  errorText: { color: '#FF4136', textAlign: 'center', fontSize: 18, marginHorizontal: 20 },
+  statusText: { color: '#FFF', marginTop: 15, fontSize: 16, fontFamily: 'Inter-Light'},
+  errorText: { color: '#FF4136', textAlign: 'center', fontSize: 18, marginHorizontal: 20, fontFamily: 'Inter-Light' },
   retryButton: { backgroundColor: '#4A90E2', padding: 10, borderRadius: 5, marginTop: 15 },
-  retryText: { color: '#FFF', fontWeight: 'bold' },
-  cacheWarningText: { color: '#FFD700', textAlign: 'center', marginVertical: 10, paddingHorizontal: 20, fontSize: 14 },
-  
-  // ❌ FIX: The duplicate style declaration for chartStatusText has been removed.
-  // The first valid declaration remains.
-  chartStatusText: { color: '#CCC', textAlign: 'center', marginVertical: 80 },
+  retryText: { color: '#FFF', fontWeight: 'bold', fontFamily: 'Inter-light' },
+  cacheWarningText: { color: '#FFD700', textAlign: 'center', marginVertical: 10, paddingHorizontal: 20, fontSize: 14, fontFamily: 'Inter-light' },
+  chartStatusText: { color: '#CCC', textAlign: 'center', marginVertical: 80, fontFamily: 'Inter-Light' },
 
   // --- Header & Info Block ---
   header: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15, paddingTop: 10, height: 50, alignItems: 'center' },
@@ -268,10 +265,10 @@ const styles = StyleSheet.create({
   symbolIcon: { width: 24, height: 24, marginRight: 8 },
   symbolName: { color: '#CCC', fontSize: 16 },
   
-  totalHolding: { color: '#FFF', fontSize: 32, fontWeight: 'bold', marginVertical: 8 },
+  totalHolding: { color: '#FFF', fontSize: 32, fontWeight: '500', marginVertical: 8, fontFamily: 'Inter-Regular' },
   priceRow: { flexDirection: 'row', alignItems: 'center' },
-  fiatPrice: { color: '#CCC', fontSize: 16, marginRight: 8 },
-  priceChange: { fontSize: 16, fontWeight: '600' },
+  fiatPrice: { color: '#CCC', fontSize: 12, marginRight: 8, fontFamily: 'Inter-Light' },
+  priceChange: { fontSize: 12, fontWeight: '600', fontFamily: 'Inter-Light' },
 
   // --- Action Row ---
   actionRow: { flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 30, marginVertical: 20 },
@@ -280,20 +277,20 @@ const styles = StyleSheet.create({
   actionLabel: { color: '#D4D4D4', fontSize: 12 },
 
   // --- Chart Section ---
-  chartSection: { paddingHorizontal: 0, paddingTop: 20, borderTopWidth: 1, borderTopColor: '#1E1E3F' },
+  chartSection: { paddingHorizontal: 0, paddingTop: 20, borderTopWidth: 1, borderTopColor: '#1E1E3F', borderBottomWidth: 1, borderBottomColor: '#1E1E3F' },
   scrollContent: { paddingBottom: 150 }, 
   chartSummary: { position: 'absolute', top: 30, left: 30, zIndex: 10 }, 
-  chartCurrentPrice: { color: '#FFF', fontSize: 24, fontWeight: 'bold' },
-  chartChange: { fontSize: 16, fontWeight: '600', marginTop: 4 },
+  chartCurrentPrice: { color: '#FFF', fontSize: 20, fontWeight: '500', fontFamily: 'Inter-Regular' },
+  chartChange: { fontSize: 12, fontWeight: '400', marginTop: 4, fontFamily: 'Inter-Regular' },
 
   // --- Time Frame Buttons ---
-  timeFrameContainer: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#1E1E3F', borderRadius: 8, padding: 5, marginVertical: 10, marginHorizontal: 15 },
-  timeFrameButton: { paddingVertical: 10, paddingHorizontal: 0, width: 40, height: 40, borderRadius: 5, justifyContent: 'center', alignItems: 'center' },
-  timeFrameActive: { backgroundColor: '#4A90E2' },
-  timeFrameText: { color: '#FFF', fontSize: 14, fontWeight: '600' },
+  timeFrameContainer: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#0d0d25ff', borderRadius: 8, padding: 5, marginVertical: 10, marginHorizontal: 15 },
+  timeFrameButton: { paddingVertical: 10, paddingHorizontal: 0, width: 40, height: 40, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  timeFrameActive: { backgroundColor: '#052e5dff' },
+  timeFrameText: { color: '#FFF', fontSize: 11, fontWeight: '600', fontFamily: 'Inter-Regular' },
 
   // --- Market Data & About Sections ---
-  sectionTitle: { color: '#FFF', fontSize: 20, fontWeight: '700', paddingHorizontal: 15, marginTop: 20, marginBottom: 10 },
+  sectionTitle: { color: '#FFF', fontSize: 20, fontWeight: '400', paddingHorizontal: 15, marginTop: 20, marginBottom: 10, fontFamily: 'Inter-Regular' },
   statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -303,12 +300,12 @@ const styles = StyleSheet.create({
   statBox: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: '#1E1E3F',
-    borderRadius: 10,
+    backgroundColor: '#0d0d25ff',
+    borderRadius: 17,
     padding: 10,
     marginHorizontal: 5,
   },
-  statLabel: { color: '#AAA', fontSize: 12, marginBottom: 4 },
-  statValue: { fontSize: 16, fontWeight: '600' },
-  description: { color: '#CCC', fontSize: 14, lineHeight: 20, paddingHorizontal: 15, marginBottom: 20 },
+  statLabel: { color: '#AAA', fontSize: 12, marginBottom: 4, fontFamily: 'Inter-Regular', fontWeight: 400, },
+  statValue: { fontSize: 12, fontWeight: '600', fontFamily: 'Inter-Light' },
+  description: { color: '#CCC', fontSize: 14, lineHeight: 20, paddingHorizontal: 15, marginBottom: 20, textAlign: 'justify', fontFamily: 'Inter-Light' },
 });

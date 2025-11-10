@@ -112,52 +112,56 @@ const styles = StyleSheet.create({
   },
   name: {
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '600',
     marginRight: 8,
-    //fontFamily: Inter,
+    fontFamily: 'Inter-Regular',
   },
   symbolBadge: {
-    backgroundColor: '#444', // Dark grey background for the symbol
-    borderRadius: 4,
+    backgroundColor: '#43414B', // Dark grey background for the symbol
+    borderRadius: 15,
     paddingHorizontal: 5,
     paddingVertical: 1,
   },
   symbolText: {
     color: '#CCC',
-    fontSize: 10,
-    fontWeight: '500',
+    fontSize: 8,
+    fontWeight: '400',
+    fontFamily: 'Inter-Light'
   },
   bottomRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   currentPrice: {
-    color: '#FFF',
-    fontSize: 13,
+    color: '#b3b2b2ff',
+    fontSize: 12,
     fontWeight: '600',
     marginRight: 10,
   },
   change: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '500',
+    fontFamily: 'Inter-Light'
   },
   
   // --- Right Section Styles ---
   rightSection: {
-    alignItems: 'flex-end', // Aligns both lines to the right
+    alignItems: 'flex-end',
     marginLeft: 10,
   },
   holdingAmount: {
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 4, // Space between lines
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 4,
+    fontFamily: 'Inter-Regular'
   },
   holdingValue: {
     color: '#CCC',
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 11,
+    fontWeight: '500',
+    fontFamily: 'Inter-Light'
   },
 });
 

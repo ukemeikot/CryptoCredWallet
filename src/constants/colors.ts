@@ -14,7 +14,7 @@ export interface ColorTheme {
 export const DarkTheme: ColorTheme = {
   primary: '#4A90E2',      // Web3 Accent Blue
   background: '#0A0A1F',   // Deepest background color
-  card: '#1C1C1C',         // List items, Card backgrounds
+  card: '#11173cff',         // List items, Card backgrounds
   text: '#FFFFFF',
   subtext: '#D4D4D4',
   success: '#00FF7F',      // Vibrant Green

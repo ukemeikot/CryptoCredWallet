@@ -74,14 +74,14 @@ const SettingsScreen = () => {
           <Text style={[styles.sectionTitle, { color: theme.subtext }]}>Data & Resilience</Text>
           <View style={styles.sectionContainer}>
             <SettingsTile 
-              title="Force Refresh Data" 
-              value="Reloads all market data"
+              title="Force Refresh" 
+              value=""
               iconName="refresh-circle-outline" 
               onPress={forceFullRefresh}
             />
             <SettingsTile 
               title="Clear Local Cache" 
-              value="Removes all persistent data"
+              value=""
               iconName="trash-outline" 
               onPress={clearLocalCache}
               isDestructive={true}
@@ -93,13 +93,13 @@ const SettingsScreen = () => {
           <View style={styles.sectionContainer}>
             <SettingsTile 
               title="API Source" 
-              value="CoinGecko Public API"
+              value="CoinGecko"
               iconName="code-outline" 
               onPress={() => Alert.alert("API", "Data is sourced via CoinGecko Public API.")}
             />
             <SettingsTile 
               title="App Version" 
-              value="1.0.0 (HNG Stage 4)" 
+              value="1.0.0" 
               iconName="information-circle-outline" 
               onPress={() => {}}
             />
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     marginBottom: 20,
+    fontFamily: 'Inter-Regular'
   },
   sectionTitle: {
     fontSize: 14,
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     textTransform: 'uppercase',
+    fontFamily: 'Inter-Regular'
   },
   sectionContainer: {
     borderRadius: 15,
