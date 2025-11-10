@@ -1,9 +1,11 @@
 import { httpClient } from './httpClient';
-import { ICoinMarket, ICoinDetail, IChartData } from '../types/coinTypes';
+// Assuming ICoinDetail and IChartData were correctly updated in types/coinTypes.ts 
+// to use the OHLC format (array of arrays).
+import { ICoinMarket, ICoinDetail, IChartData, OHLCPoint } from '../types/coinTypes'; 
 
 // --- API Methods ---
 
-// 1. Fetch List of Coins (for CoinListScreen)//
+// 1. Fetch List of Coins (for CoinListScreen)
 export async function fetchCoinMarkets(): Promise<ICoinMarket[]> {
   const response = await httpClient.get('/coins/markets', {
     params: {
@@ -15,11 +17,10 @@ export async function fetchCoinMarkets(): Promise<ICoinMarket[]> {
       price_change_percentage: '1h,24h,7d',
     },
   });
-  // The .data property will automatically be typed as ICoinMarket[]
   return response.data;
 }
 
-// 2. Fetch Single Coin Details (for CoinDetailScreen)//
+// 2. Fetch Single Coin Details (for CoinDetailScreen)
 export async function fetchCoinDetails(coinId: string): Promise<ICoinDetail> {
   const response = await httpClient.get(`/coins/${coinId}`, {
     params: {
@@ -32,13 +33,20 @@ export async function fetchCoinDetails(coinId: string): Promise<ICoinDetail> {
   return response.data;
 }
 
-// 3. Fetch Price Chart Data//
-export async function fetchMarketChart(coinId: string, days: number = 7): Promise<IChartData> {
-  const response = await httpClient.get(`/coins/${coinId}/market_chart`, {
+// 3. Fetch Price Chart Data (Updated to OHLC/Candlestick Endpoint)
+// NOTE: We change the path to '/ohlc' and return the raw array data.
+export async function fetchMarketChart(coinId: string, days: number = 7): Promise<OHLCPoint[]> {
+  // OHLC data is typically daily for ranges above 7 days. 
+  // We use the OHLC endpoint which returns [timestamp, open, high, low, close].
+  const response = await httpClient.get(`/coins/${coinId}/ohlc`, {
     params: {
       vs_currency: 'usd',
-      days: days, // Fetch 7 days of data for the chart
+      days: days, 
+      // CoinGecko automatically adjusts granularity based on 'days' parameter.
     },
   });
-  return response.data;
+  
+  // The OHLC endpoint returns an array of arrays directly: [[t, o, h, l, c], ...]
+  // We cast the response data directly to the expected OHLCPoint array.
+  return response.data as OHLCPoint[];
 }

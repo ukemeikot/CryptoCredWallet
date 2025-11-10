@@ -4,8 +4,13 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { fetchCoinMarkets } from '../api/cryptoService';
 import { ICoin } from '../types/coinTypes';
 import { ICoinListState, DataStatus } from '../types/hookTypes';
-import { getFavoriteCoinIds, saveFavoriteCoinIds } from '../api/favoritesService'; 
-
+// 🌟 NEW: Import persistence functions for coin data
+import { 
+  getFavoriteCoinIds, 
+  saveFavoriteCoinIds, 
+  getLastCoinList, 
+  saveCoinList 
+} from '../api/favoritesService'; 
 
 
 const initialState: ICoinListState = {
@@ -21,37 +26,78 @@ export const useCoinData = () => {
   
   // --- Core Data Fetching ---
   const fetchInitialData = useCallback(async () => {
-    setState(s => ({ ...s, status: 'loading', error: null }));
-    try {
-      // 1. Fetch Favorites and Coin List in parallel for efficiency
-      const [favoriteIds, rawCoinMarkets] = await Promise.all([
-        // 🌟 Use the real service function
-        getFavoriteCoinIds(), 
-        fetchCoinMarkets()
-      ]);
+    
+    // Phase 1: Load Persisted Data Immediately
+    const localFavoriteIds = await getFavoriteCoinIds();
+    const localCoins = await getLastCoinList(); // 👈 Attempt to load cached list
+    
+    if (localCoins && localCoins.length > 0) {
+        // If we have cached data, display it immediately and show status as 'loading' 
+        // to indicate that a fresh API check is running in the background.
+        const persistedCoins: ICoin[] = localCoins.map(coin => ({
+            ...coin,
+            isFavorite: localFavoriteIds.includes(coin.id)
+        }));
+        setState(s => ({
+            ...s,
+            status: 'loading',
+            coins: persistedCoins,
+            favorites: localFavoriteIds,
+            error: null, // Clear old error message while attempting fetch
+        }));
+    } else {
+        // No local data, show full loading state
+        setState(s => ({ ...s, status: 'loading', error: null }));
+    }
 
-      // 2. Map raw data to application-specific ICoin model
+
+    try {
+      // Phase 2: Attempt Fresh API Call
+      const rawCoinMarkets = await fetchCoinMarkets();
+      
+      // Phase 3: Success! Save new data and update state
+      saveCoinList(rawCoinMarkets); // 👈 SAVE successful data
+
+      // Re-fetch favorites just in case the save process was slow, though usually redundant
+      const currentFavoriteIds = await getFavoriteCoinIds(); 
+
       const applicationCoins: ICoin[] = rawCoinMarkets.map(coin => ({
         ...coin,
-        isFavorite: favoriteIds.includes(coin.id) // Attach favorite status
+        isFavorite: currentFavoriteIds.includes(coin.id)
       }));
 
       setState(s => ({
         ...s,
         status: 'success',
         coins: applicationCoins,
-        favorites: favoriteIds,
+        favorites: currentFavoriteIds,
+        error: null,
       }));
 
     } catch (e: any) {
-      // 3. Handle Error and Offline States (Resilience)
-      // Note: A more robust check for offline status (e.g., using NetInfo)
-      // is recommended, but this Axios check works for a basic start.
-      const isOffline = e.message.includes('Network Error'); 
+      // Phase 4: API Failure (401, Offline, Rate Limit, etc.)
+      const isOffline = e.message.includes('Network Error');
+      
+      // 🌟 ELEGANT ERROR MESSAGE:
+      let errorMessage = 'Could not fetch current data.';
+      if (isOffline) {
+          errorMessage = 'Offline Mode: Displaying last known data.';
+      } else if (e.response && e.response.status === 401) {
+          errorMessage = 'Authentication Failed (401). Displaying cached data.';
+      } else if (localCoins && localCoins.length > 0) {
+          errorMessage = 'Update failed. Displaying last known data.';
+      } else {
+          errorMessage = 'Failed to load any data. Please check connection/API key.';
+      }
+
+      // If we have NO local coins, the state should reflect a hard error (to show error screen).
+      // If we DO have local coins, the state reflects the error, but the coins array is preserved, 
+      // preventing a blank screen.
       setState(s => ({ 
         ...s, 
-        status: isOffline ? 'offline' : 'error', 
-        error: isOffline ? 'You appear to be offline.' : (e.message || 'An unknown error occurred.')
+        status: localCoins && localCoins.length > 0 ? 'success' : (isOffline ? 'offline' : 'error'),
+        error: errorMessage,
+        // If the API failed, 'coins' remain whatever was previously loaded (from Phase 1).
       }));
     }
   }, []);
@@ -61,29 +107,26 @@ export const useCoinData = () => {
   }, [fetchInitialData]);
 
 
-  // --- Logic for Search Feature ---
+  // --- Logic for Search Feature (No Change) ---
   const filteredCoins = useMemo(() => {
     const { coins, searchTerm } = state;
     if (!searchTerm) return coins;
 
     const lowerCaseSearch = searchTerm.toLowerCase();
 
-    // Search is performed against name and symbol
     return coins.filter(coin => 
       coin.name.toLowerCase().includes(lowerCaseSearch) ||
       coin.symbol.toLowerCase().includes(lowerCaseSearch)
     );
   }, [state.coins, state.searchTerm]);
   
-  // Expose function to update the search term from the UI
   const setSearchTerm = useCallback((term: string) => {
     setState(s => ({ ...s, searchTerm: term }));
   }, []);
 
 
-  // --- Logic for Favorites Feature ---
+  // --- Logic for Favorites Feature (No Change) ---
   const toggleFavorite = useCallback(async (coinId: string) => {
-    // 1. Optimistically update UI state
     setState(s => {
       const isCurrentlyFavorite = s.favorites.includes(coinId);
       const newFavorites = isCurrentlyFavorite
@@ -94,10 +137,6 @@ export const useCoinData = () => {
         coin.id === coinId ? { ...coin, isFavorite: !isCurrentlyFavorite } : coin
       );
 
-      // 2. Persist the new favorite list to local storage
-      // 🌟 Use the real service function (note: it's an async call)
-      // We don't await here to prevent blocking the UI render, relying on 
-      // the `setState` for immediate visual update (optimistic update).
       saveFavoriteCoinIds(newFavorites); 
 
       return { ...s, coins: newCoins, favorites: newFavorites };
